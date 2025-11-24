@@ -1,0 +1,78 @@
+{
+  "name": "jsonext",
+  "displayName": "JSON Formatter (JSON/JSONC/JSONL)",
+  "description": "Formatter for JSON, JSONC, and JSONL/NDJSON with nested indentation.",
+  "version": "0.0.1",
+  "publisher": "your-name-here",
+  "license": "SEE LICENSE IN LICENSE",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Formatters"
+  ],
+  "activationEvents": [
+    "onLanguage:json",
+    "onLanguage:jsonc",
+    "onLanguage:jsonl",
+    "onCommand:jsonext.formatDocument"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "jsonl",
+        "aliases": [
+          "JSONL",
+          "NDJSON"
+        ],
+        "extensions": [
+          ".jsonl",
+          ".ndjson"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "jsonext.formatDocument",
+        "title": "JSONExt: Format Document"
+      }
+    ],
+    "configuration": {
+      "title": "JSONExt",
+      "properties": {
+        "jsonext.indentSize": {
+          "type": "integer",
+          "default": 2,
+          "minimum": 1,
+          "description": "Indentation size when formatting (overrides editor tabSize if set)."
+        },
+        "jsonext.ensureFinalNewline": {
+          "type": "boolean",
+          "default": true,
+          "description": "Ensure a trailing newline at end of formatted documents."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -p . --watch",
+    "lint": "echo \"Add linting if desired\"",
+    "test": "node ./dist/test/runTest.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^2.3.4",
+    "@types/mocha": "^10.0.6",
+    "mocha": "^10.2.0",
+    "typescript": "^5.3.3",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.2.0"
+  }
+}
