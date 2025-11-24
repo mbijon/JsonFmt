@@ -1,0 +1,12 @@
+node_modules
+
+/dist/
+/out/
+/.vscode/
+/.vscode-test/
+*.vsix
+
+*.log
+.DS_Store
+
+/coverage/
