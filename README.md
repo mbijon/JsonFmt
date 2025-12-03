@@ -37,5 +37,6 @@ Configure indentation and trailing newline behavior via `jsonext.indentSize` and
 ----
 
 License: MIT
-Coyright: Mike Bijon @mbijon, 2025
+
+Copyright: &copy; Mike Bijon @mbijon, 2025
 
