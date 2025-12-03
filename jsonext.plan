@@ -1,0 +1,54 @@
+Plan to build JSON/JSONC/JSONL formatter VS Code extension
+
+1) Initialize extension workspace
+- Add project metadata (name, displayName, description, version, publisher placeholder) and licensing reference from LICENSE.
+- Add .vscode recommended settings (TypeScript SDK path, npm scripts explorer).
+- Set up gitignore for node_modules, out, .vscode-test, vsix artifacts.
+
+2) Configure package.json manifest
+- Set engines.vscode and categories: ["Formatters"] so the extension is discoverable as a formatter.
+- Add activationEvents for onLanguage:json, onLanguage:jsonc, onLanguage:jsonl, and onCommand for the manual format command.
+- Contribute languages: reuse built-ins for json/jsonc; define a jsonl language with extensions [.jsonl, .ndjson] and an alias.
+- Contribute commands (e.g., jsonext.formatDocument) with titles so they appear in the Command Palette.
+- Contribute configuration options (indent size override, trailing newline toggle) if desired.
+
+3) Set up build tooling
+- Add devDependencies: typescript, @types/node, vscode (or @types/vscode), @vscode/test-electron for integration tests, and vsce for packaging.
+- Create tsconfig.json targeting ES2020, module commonjs, outDir dist/out (or out), and sourceMap for debugging.
+- Add npm scripts: compile, watch, lint (optional), test, package.
+
+4) Implement extension entrypoint (src/extension.ts)
+- Register a DocumentFormattingEditProvider for selectors json, jsonc, jsonl that VS Code uses for format commands and format-on-save.
+- Register a command (jsonext.formatDocument) that triggers the same formatter to make it explicit in the Command Palette.
+- Ensure dispose of registrations in deactivate.
+
+5) Implement formatting logic (src/formatter.ts)
+- JSON/JSONC: parse with jsonc-parser to tolerate comments/trailing commas; use jsonc-parser format function to reprint with nested indentation that respects editor tabSize/insertSpaces.
+- JSONL: split lines, ignore blanks/comments (if any), prettify each JSON object with JSON.stringify(value, null, indent), then rejoin with \n; preserve terminal newline per setting.
+- Normalize indentation using TextEdit replacements across the full document range.
+- Handle parse errors gracefully: show VS Code error message and avoid destructive edits if content is invalid.
+
+6) Wire configuration and options
+- Use FormattingOptions (tabSize/insertSpaces) from VS Code; fall back to 2 spaces if undefined.
+- Surface optional settings (e.g., jsonext.indentSize, jsonext.ensureFinalNewline) and merge them with editor settings.
+- Respect editor trimming of trailing whitespace and EOF newline behavior.
+
+7) Testing
+- Add unit tests for formatter functions (JSON, JSONC, JSONL) using mocha/ts-node or compiled JS.
+- Add minimal VS Code integration test using @vscode/test-electron to ensure formatting provider runs on sample documents and registers in the Command Palette.
+
+8) Packaging and validation
+- Run npm run compile and npm test; fix lint/type errors.
+- Use vsce package to produce a .vsix and confirm contributes/activation metadata.
+- Optionally add CI workflow stub (node setup, npm ci, npm test, npm run compile).
+
+Suggested file/folder structure
+- package.json
+- tsconfig.json
+- src/extension.ts
+- src/formatter.ts
+- src/types.ts (shared types if needed)
+- test/formatter.test.ts
+- test/runTest.ts (VS Code integration harness)
+- .vscode/extensions.json and settings.json (optional)
+- .gitignore

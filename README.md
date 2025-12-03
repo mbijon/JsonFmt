@@ -2,14 +2,24 @@
 
 VS Code extension to format JSON, JSONC, and JSONL/NDJSON for human-readability with consistent indentation and optional trailing newlines.
 
+**Why?**
+Mainly for JSONL support. Existing VSCode JSON formatting extensions don't format JSONL well or don't validate it at all.
+
+
 ## Features
-- Formats JSON, JSONC, and line-delimited JSON into a neatly indented, human-readable layout.
+- Formats JSON, JSONC, and JSONL (line-delimited JSON) into a neatly indented, human-readable layout.
 - Works through the built-in `Format Document` action or the `JSONExt: Format Document` command.
 - Respects `jsonext.indentSize` and `jsonext.ensureFinalNewline` settings for per-workspace control.
 
 ## Usage
-- Open a JSON/JSONC/JSONL file and run `Format Document`, or invoke `JSONExt: Format Document` from the Command Palette.
-- Configure indentation and trailing newline behavior via `jsonext.indentSize` and `jsonext.ensureFinalNewline` in your settings.
+
+Open a JSON/JSONC/JSONL file and run `Format Document`, or invoke `JSONExt: Format Document` from the Command Palette.
+
+### Configuration
+
+Configure indentation and trailing newline behavior via `jsonext.indentSize` and `jsonext.ensureFinalNewline` in your settings.
+
+----
 
 ## Install via VSIX
 1. Build or download the VSIX (a packaged `jsonext-0.0.1.vsix` lives at the repo root).
@@ -23,3 +33,9 @@ VS Code extension to format JSON, JSONC, and JSONL/NDJSON for human-readability 
 - Run the test suite (after compiling): `npm test`
 - Watch for rebuilds during development: `npm run watch`
 - Package a new VSIX: `npm run package`
+
+----
+
+License: MIT
+Coyright: Mike Bijon @mbijon, 2025
+
